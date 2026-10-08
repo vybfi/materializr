@@ -202,8 +202,15 @@ TEST(I18n, CataloguesAreWellFormed) {
 }
 
 // The silent-rendering-failure guard.
+// Latin languages only: their glyphs all come from JetBrains Mono, so a
+// codepoint the English text never uses risks rendering as a missing-glyph
+// box. Chinese is exempt - its glyphs come from the bundled Noto Sans SC CJK
+// fallback merged into the UI font (see Application.cpp), which covers the
+// Han repertoire by design, so "outside Latin-1" is the expected state for
+// every entry in that catalogue, not a defect.
 TEST(I18n, NoTranslationDemandsAGlyphEnglishDoesNot) {
     for (const auto& c : allCatalogues()) {
+        if (c.lang == Lang::Chinese) continue;
         for (int i = 0; i < c.n; ++i) {
             const std::set<unsigned> en = codePoints(c.rows[i].en);
             for (unsigned cp : codePoints(c.rows[i].tr)) {
