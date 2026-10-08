@@ -1,4 +1,5 @@
 #include "GuidedLoftOp.h"
+#include "ui/LengthField.h"
 
 #include <BRepOffsetAPI_ThruSections.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -419,8 +420,8 @@ bool GuidedLoftOp::undo(Document& doc) {
 }
 
 std::string GuidedLoftOp::description() const {
-    return "Guided loft: base profile + " + std::to_string(m_rails.size()) +
-           " rail(s)";
+    return materializr::trFormat("Guided loft: base profile + %d rail(s)",
+                                 static_cast<int>(m_rails.size()));
 }
 
 void GuidedLoftOp::renderProperties() {

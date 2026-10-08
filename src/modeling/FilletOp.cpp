@@ -665,8 +665,9 @@ bool FilletOp::undo(Document& doc) {
 }
 
 std::string FilletOp::description() const {
-    return "Fillet R" + materializr::fmtLength(m_radius) + " on " +
-           std::to_string(m_edges.size()) + " edge(s)";
+    return materializr::trFormat("Fillet R%s on %d edge(s)",
+                                 materializr::fmtLength(m_radius),
+                                 static_cast<int>(m_edges.size()));
 }
 
 void FilletOp::renderProperties() {

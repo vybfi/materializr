@@ -62,7 +62,7 @@ bool SweepOp::undo(Document& doc) {
 }
 
 std::string SweepOp::description() const {
-    return "Sweep profile along path";
+    return materializr::tr("Sweep profile along path");
 }
 
 void SweepOp::renderProperties() {

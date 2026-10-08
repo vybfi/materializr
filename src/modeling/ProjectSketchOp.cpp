@@ -524,9 +524,9 @@ bool ProjectSketchOp::undo(Document& doc) {
 }
 
 std::string ProjectSketchOp::description() const {
-    char buf[96];
-    std::snprintf(buf, sizeof(buf), "%s sketch %s", m_mode == Mode::Engrave ? "Engrave" : "Emboss", materializr::fmtLength(m_depth).c_str());
-    return buf;
+    return materializr::trFormat("%s sketch %s",
+                                 materializr::tr(m_mode == Mode::Engrave ? "Engrave" : "Emboss"),
+                                 materializr::fmtLength(m_depth));
 }
 
 void ProjectSketchOp::renderProperties() {

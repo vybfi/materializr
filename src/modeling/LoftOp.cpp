@@ -1,4 +1,5 @@
 #include "LoftOp.h"
+#include "ui/LengthField.h"
 #include <cctype>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepGProp.hxx>
@@ -586,14 +587,11 @@ bool LoftOp::undo(Document& doc) {
 }
 
 std::string LoftOp::description() const {
-    std::string desc = "Loft through " + std::to_string(m_profiles.size()) + " profiles";
-    if (m_solid) {
-        desc += " (Solid)";
-    } else {
-        desc += " (Shell)";
-    }
+    std::string desc = materializr::trFormat("Loft through %d profiles",
+                                             static_cast<int>(m_profiles.size()));
+    desc += m_solid ? materializr::tr(" (Solid)") : materializr::tr(" (Shell)");
     if (m_ruled) {
-        desc += " Ruled";
+        desc += materializr::tr(" Ruled");
     }
     return desc;
 }

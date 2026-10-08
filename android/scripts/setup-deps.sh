@@ -31,8 +31,30 @@ NDK="${ANDROID_NDK:-${ANDROID_NDK_HOME:-${ANDROID_NDK_ROOT:-$(ls -d "$ANDROID_HO
 TOOLCHAIN="$NDK/build/cmake/android.toolchain.cmake"
 # Prefer whatever cmake is on PATH (F-Droid's buildserver / a distro package);
 # fall back to the SDK's bundled cmake. Version isn't pinned - 3.22+ is fine.
+# The .exe variants cover a Windows host, where the SDK installs cmake.exe and
+# a bare "cmake" glob finds nothing.
 CMAKE_BIN="$(command -v cmake || ls "$ANDROID_HOME"/cmake/*/bin/cmake 2>/dev/null | sort -V | tail -1)"
+[ -n "$CMAKE_BIN" ] || CMAKE_BIN="$(ls "$ANDROID_HOME"/cmake/*/bin/cmake.exe 2>/dev/null | sort -V | tail -1)"
 [ -n "$CMAKE_BIN" ] || CMAKE_BIN="$ANDROID_HOME/cmake/3.22.1/bin/cmake"
+
+# Generator: Ninja when available (the SDK's cmake bundles ninja in its bin/),
+# else the host default (Unix Makefiles on Linux, which is what this script was
+# written for). On a Windows host the default would be NMake/VS, which the NDK
+# toolchain build does not want - Ninja is effectively required there.
+# The .exe fallback + explicit CMAKE_MAKE_PROGRAM matter on a Windows host:
+# CMake itself is a native process and cannot exec a shell shim, so ninja must
+# be resolved to a real executable and passed in rather than PATH-searched.
+GEN=""
+NINJA_BIN="$(command -v ninja || true)"
+[ -n "$NINJA_BIN" ] || NINJA_BIN="$(ls "$ANDROID_HOME"/cmake/*/bin/ninja.exe 2>/dev/null | sort -V | tail -1)"
+# Normalize MSYS /c/... paths to native C:/... form: CMake (a native process on
+# Windows) stores and re-invokes these programs itself, where it cannot rely on
+# the MSYS argument translation that happens only for direct child execs.
+if command -v cygpath >/dev/null 2>&1; then
+    CMAKE_BIN="$(cygpath -m "$CMAKE_BIN" 2>/dev/null || echo "$CMAKE_BIN")"
+    if [ -n "$NINJA_BIN" ]; then NINJA_BIN="$(cygpath -m "$NINJA_BIN" 2>/dev/null || echo "$NINJA_BIN")"; fi
+fi
+if [ -n "$NINJA_BIN" ]; then GEN="-G Ninja -DCMAKE_MAKE_PROGRAM=$NINJA_BIN"; fi
 
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"      # materializr repo root
 WORK="${MATERIALIZR_WORK:-$HOME/Android}"        # downloads + build trees
@@ -72,7 +94,7 @@ echo "SDL2 linked at android/app/jni/SDL"
 fetch "https://download.savannah.gnu.org/releases/freetype/freetype-$FT_VER.tar.gz" "$DL/freetype.tar.gz" "$FT_SHA256"
 [ -d "$SRC/freetype-$FT_VER" ] || tar -xzf "$DL/freetype.tar.gz" -C "$SRC"
 rm -rf "$BUILD/freetype-$ABI"
-"$CMAKE_BIN" -S "$SRC/freetype-$FT_VER" -B "$BUILD/freetype-$ABI" \
+"$CMAKE_BIN" $GEN -S "$SRC/freetype-$FT_VER" -B "$BUILD/freetype-$ABI" \
     -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" -DANDROID_ABI="$ABI" -DANDROID_PLATFORM="android-$API" \
     -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
     -DFT_DISABLE_HARFBUZZ=ON -DFT_DISABLE_BROTLI=ON -DFT_DISABLE_BZIP2=ON \
@@ -101,7 +123,7 @@ OCCT_DIR="$SRC/OCCT-${OCCT_TAG#V}"
 # error. Windows (vcpkg) stays on 8.0; Android/desktop stay on 7.9.x.
 
 rm -rf "$BUILD/occt-$ABI"
-"$CMAKE_BIN" -S "$OCCT_DIR" -B "$BUILD/occt-$ABI" \
+"$CMAKE_BIN" $GEN -S "$OCCT_DIR" -B "$BUILD/occt-$ABI" \
     -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" -DANDROID_ABI="$ABI" -DANDROID_PLATFORM="android-$API" \
     -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS_16K" -DCMAKE_MODULE_LINKER_FLAGS="$LDFLAGS_16K" \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$PREFIX" \

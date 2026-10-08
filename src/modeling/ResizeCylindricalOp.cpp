@@ -709,12 +709,15 @@ void ResizeCylindricalOp::renderProperties() {
 }
 
 std::string ResizeCylindricalOp::description() const {
-    char buf[160];
     if (std::abs(m_newTopR - m_newBottomR) < 1e-5)
-        std::snprintf(buf, sizeof(buf), "Resize %s D %s → %s", m_isHole ? "hole" : "outer", materializr::fmtLength(m_oldTopR * 2.0).c_str(), materializr::fmtLength(m_newTopR * 2.0).c_str());
-    else
-        std::snprintf(buf, sizeof(buf), "Shape %s: %s / %s (bottom / top)", m_isHole ? "hole" : "outer", materializr::fmtLength(m_newBottomR * 2.0).c_str(), materializr::fmtLength(m_newTopR * 2.0).c_str());
-    return buf;
+        return materializr::trFormat("Resize %s D %s → %s",
+                                     materializr::tr(m_isHole ? "hole" : "outer"),
+                                     materializr::fmtLength(m_oldTopR * 2.0),
+                                     materializr::fmtLength(m_newTopR * 2.0));
+    return materializr::trFormat("Shape %s: %s / %s (bottom / top)",
+                                 materializr::tr(m_isHole ? "hole" : "outer"),
+                                 materializr::fmtLength(m_newBottomR * 2.0),
+                                 materializr::fmtLength(m_newTopR * 2.0));
 }
 
 OperationDiff ResizeCylindricalOp::captureDiff() const {

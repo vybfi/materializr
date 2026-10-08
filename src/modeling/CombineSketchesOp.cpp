@@ -1,4 +1,5 @@
 #include "CombineSketchesOp.h"
+#include "ui/LengthField.h"
 #include <algorithm>
 #include <unordered_map>
 
@@ -96,5 +97,6 @@ bool CombineSketchesOp::undo(Document& doc) {
 }
 
 std::string CombineSketchesOp::description() const {
-    return "Combine " + std::to_string(m_otherSnaps.size() + 1) + " sketches";
+    return materializr::trFormat("Combine %d sketches",
+                                 static_cast<int>(m_otherSnaps.size() + 1));
 }

@@ -1,4 +1,5 @@
 #include "FaceTweakOp.h"
+#include "ui/LengthField.h"
 
 #include "core/Units.h"
 
@@ -136,11 +137,9 @@ std::string FaceTweakOp::description() const {
     // re-renders it with no stored string to go stale. The angle branch is
     // degrees and never touches the unit.
     if (std::abs(ang) > 1e-6) {
-        char buf[96];
-        std::snprintf(buf, sizeof buf, "Tweak face %.2f deg", ang);
-        return buf;
+        return materializr::trFormat("Tweak face %.2f deg", ang);
     }
-    return "Tweak face " + materializr::fmtLength(dist);
+    return materializr::trFormat("Tweak face %s", materializr::fmtLength(dist));
 }
 
 void FaceTweakOp::renderProperties() {

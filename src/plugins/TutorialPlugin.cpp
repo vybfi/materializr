@@ -404,10 +404,10 @@ void renderTutorial(materializr::PluginContext&) {
         }
 
         ImGui::TextDisabled(materializr::tr("Step %d of %d"), g_step + 1, kStepCount);
-        ImGui::SeparatorText(s.title);
+        ImGui::SeparatorText(materializr::tr(s.title));
 
         ImGui::PushTextWrapPos(0.0f); // wrap at the window's right edge
-        ImGui::TextUnformatted(s.body);
+        ImGui::TextUnformatted(materializr::tr(s.body));
 
         // Layout-specific location line: where to find this in the layout the
         // user picked on the first page. Highlighted - it's the line that makes
@@ -418,7 +418,8 @@ void renderTutorial(materializr::PluginContext&) {
                 ImGui::Spacing();
                 ImGui::PushStyleColor(ImGuiCol_Text,
                                       ImVec4(0.55f, 0.90f, 0.70f, 1.0f));
-                ImGui::TextWrapped(materializr::tr("In this layout:  %s"), s.where[li]);
+                ImGui::TextWrapped(materializr::tr("In this layout:  %s"),
+                                   materializr::tr(s.where[li]));
                 ImGui::PopStyleColor();
             }
         }
@@ -433,12 +434,12 @@ void renderTutorial(materializr::PluginContext&) {
                                           : ImVec4(0.60f, 0.60f, 0.64f, 1.0f);
                 ImGui::Spacing();
                 ImGui::PushStyleColor(ImGuiCol_Text, col);
-                ImGui::TextWrapped("%s  %s", tag, text);
+                ImGui::TextWrapped("%s  %s", tag, materializr::tr(text));
                 ImGui::PopStyleColor();
             };
             // Active input first so the reader sees the relevant one immediately.
-            if (touch) { guide("Touch:", s.touch, true);  guide("Mouse:", s.mouse, false); }
-            else       { guide("Mouse:", s.mouse, true);  guide("Touch:", s.touch, false); }
+            if (touch) { guide(materializr::tr("Touch:"), s.touch, true);  guide(materializr::tr("Mouse:"), s.mouse, false); }
+            else       { guide(materializr::tr("Mouse:"), s.mouse, true);  guide(materializr::tr("Touch:"), s.touch, false); }
         }
         ImGui::PopTextWrapPos();
 
@@ -452,7 +453,8 @@ void renderTutorial(materializr::PluginContext&) {
             else            g_onPicker = true;   // back to the layout picker
         }
         ImGui::SameLine();
-        if (ImGui::Button(last ? "Finish" : "Next", uiSz(80, 0))) {
+        if (ImGui::Button(last ? materializr::tr("Finish") : materializr::tr("Next"),
+                       uiSz(80, 0))) {
             if (last) close();
             else      g_step++;
         }

@@ -1144,7 +1144,7 @@ void Application::renderImTouchLayout() {
                 if (i == failedAt)          tint = red;
                 else if (op->isReloaded())  tint = amber;
                 const bool dim = (i > curr) || !op->isEnabled();
-                std::string stepName = op->name();
+                std::string stepName = materializr::tr(op->name().c_str());
                 if (stepName.empty()) stepName = op->typeId();
                 if (touchui::timelineBox("step", stepIcon(op->typeId()),
                                          i == curr, i == m_imTouchHistoryEdit,

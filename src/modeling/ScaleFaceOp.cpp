@@ -355,9 +355,10 @@ bool ScaleFaceOp::undo(Document& doc) {
 }
 
 std::string ScaleFaceOp::description() const {
-    char buf[96];
-    std::snprintf(buf, sizeof(buf), "Scale face to %.0f%%/%.0f%% over %s (%s)", m_scaleU, m_scaleV, materializr::fmtLength(m_length).c_str(), m_mode == Mode::Extend ? "extend" : "pinch");
-    return buf;
+    return materializr::trFormat("Scale face to %.0f%%/%.0f%% over %s (%s)",
+                                 m_scaleU, m_scaleV,
+                                 materializr::fmtLength(m_length),
+                                 materializr::tr(m_mode == Mode::Extend ? "extend" : "pinch"));
 }
 
 void ScaleFaceOp::renderProperties() {

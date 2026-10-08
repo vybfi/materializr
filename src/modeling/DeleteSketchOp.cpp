@@ -1,4 +1,6 @@
 #include "DeleteSketchOp.h"
+#include "ui/LengthField.h"
+#include "../i18n.h"
 #include <cstdio>
 
 bool DeleteSketchOp::execute(Document& doc) {
@@ -20,8 +22,8 @@ bool DeleteSketchOp::undo(Document& doc) {
 }
 
 std::string DeleteSketchOp::description() const {
-    if (!m_name.empty()) return "Delete \xE2\x86\x92 " + m_name;
-    return "Delete sketch";
+    if (!m_name.empty()) return materializr::trFormat("Delete \xe2\x86\x92 %s", m_name);
+    return materializr::tr("Delete sketch");
 }
 
 std::string DeleteSketchOp::serializeParams() const {

@@ -45,6 +45,7 @@ std::vector<Catalogue> allCatalogues() {
         { "French",     materializr::kFrCatalogue, materializr::kFrCount, Lang::French     },
         { "German",     materializr::kDeCatalogue, materializr::kDeCount, Lang::German     },
         { "Italian",    materializr::kItCatalogue, materializr::kItCount, Lang::Italian    },
+        { "Chinese",    materializr::kZhCatalogue, materializr::kZhCount, Lang::Chinese    },
     };
 }
 

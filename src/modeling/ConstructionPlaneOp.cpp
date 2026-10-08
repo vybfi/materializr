@@ -209,7 +209,7 @@ std::string ConstructionPlaneOp::description() const {
         case PlaneCreationType::XY:               typeStr = "XY"; break;
         case PlaneCreationType::XZ:               typeStr = "XZ"; break;
         case PlaneCreationType::YZ:               typeStr = "YZ"; break;
-        case PlaneCreationType::OffsetFromPlane:   typeStr = "Offset (" + materializr::fmtLength(m_offset) + ")"; break;
+        case PlaneCreationType::OffsetFromPlane:   typeStr = materializr::trFormat("Offset (%s)", materializr::fmtLength(m_offset)); break;
         case PlaneCreationType::ThroughThreePoints: typeStr = "3 Points"; break;
         case PlaneCreationType::ParallelToFace:    typeStr = "Parallel to Face"; break;
         case PlaneCreationType::Midplane:           typeStr = "Midplane"; break;
@@ -217,7 +217,8 @@ std::string ConstructionPlaneOp::description() const {
         case PlaneCreationType::TangentToCylinder:  typeStr = "Tangent to Cylinder"; break;
         case PlaneCreationType::ThroughAxis:        typeStr = "Through Axis"; break;
     }
-    return "Construction Plane: " + m_planeName + " (" + typeStr + ")";
+    return materializr::trFormat("Construction Plane: %s (%s)", m_planeName,
+                                 materializr::tr(typeStr.c_str()));
 }
 
 void ConstructionPlaneOp::renderProperties() {

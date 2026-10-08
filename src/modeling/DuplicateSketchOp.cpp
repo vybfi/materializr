@@ -1,4 +1,6 @@
 #include "DuplicateSketchOp.h"
+#include "ui/LengthField.h"
+#include "../i18n.h"
 #include <TopoDS_Face.hxx>
 #include <cstdio>
 
@@ -39,8 +41,8 @@ bool DuplicateSketchOp::undo(Document& doc) {
 }
 
 std::string DuplicateSketchOp::description() const {
-    if (!m_name.empty()) return "Duplicate \xE2\x86\x92 " + m_name;
-    return "Duplicate sketch";
+    if (!m_name.empty()) return materializr::trFormat("Duplicate \xe2\x86\x92 %s", m_name);
+    return materializr::tr("Duplicate sketch");
 }
 
 std::string DuplicateSketchOp::serializeParams() const {

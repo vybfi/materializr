@@ -65,8 +65,8 @@ bool CopyOp::undo(Document& doc) {
 }
 
 std::string CopyOp::description() const {
-    return "Duplicate body " + std::to_string(m_sourceBodyId) +
-           " offset " + materializr::fmtVec3(m_dx, m_dy, m_dz);
+    return materializr::trFormat("Duplicate body %d offset %s", m_sourceBodyId,
+                                 materializr::fmtVec3(m_dx, m_dy, m_dz));
 }
 
 void CopyOp::renderProperties() {

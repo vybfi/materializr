@@ -65,10 +65,9 @@ bool AlignOp::undo(Document& doc) {
 }
 
 std::string AlignOp::description() const {
-    return "Align body " + std::to_string(m_bodyId) + " from " +
-           materializr::fmtVec3(m_source.X(), m_source.Y(), m_source.Z()) +
-           " to " +
-           materializr::fmtVec3(m_target.X(), m_target.Y(), m_target.Z());
+    return materializr::trFormat("Align body %d from %s to %s", m_bodyId,
+                                 materializr::fmtVec3(m_source.X(), m_source.Y(), m_source.Z()),
+                                 materializr::fmtVec3(m_target.X(), m_target.Y(), m_target.Z()));
 }
 
 void AlignOp::renderProperties() {

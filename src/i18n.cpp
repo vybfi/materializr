@@ -43,6 +43,10 @@ const Cat kCats[] = {
     { kFrCatalogue,   kFrCount,   "Fran\xc3\xa7""ais",  "French"     },
     { kDeCatalogue,   kDeCount,   "Deutsch",     "German"     },
     { kItCatalogue,   kItCount,   "Italiano",    "Italian"    },
+    // "简体中文" as explicit UTF-8 hex bytes, like every other non-ASCII
+    // literal here: the file stays pure ASCII, so MSVC without /utf-8 reads it
+    // identically.
+    { kZhCatalogue,   kZhCount,   "\xe7\xae\x80\xe4\xbd\x93\xe4\xb8\xad\xe6\x96\x87", "Chinese" },
 };
 static_assert(sizeof(kCats) / sizeof(kCats[0]) ==
                   static_cast<std::size_t>(Lang::COUNT),

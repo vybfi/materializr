@@ -57,7 +57,7 @@ static const char* constraintName(ConstraintType t) {
 }
 
 std::string SketchEditOp::description() const {
-    if (!m_before || !m_after) return "Sketch edit";
+    if (!m_before || !m_after) return materializr::tr("Sketch edit");
 
     // Constraint diff first - these read more specifically than the generic
     // geometry-count descriptions below.
@@ -65,7 +65,6 @@ std::string SketchEditOp::description() const {
     const auto& cAfter  = m_after->getConstraints();
     if (cBefore.size() != cAfter.size()) {
         // Added or removed. Look at the difference set (by id).
-        char buf[80];
         if (cAfter.size() > cBefore.size()) {
             // Find the first id present in after but not before.
             for (const auto& c : cAfter) {
@@ -74,32 +73,31 @@ std::string SketchEditOp::description() const {
                 if (wasThere) continue;
                 const char* name = constraintName(c.type);
                 if (c.type == ConstraintType::Distance) {
-                    std::snprintf(buf, sizeof(buf), "Add Distance %s", materializr::fmtLength(c.value).c_str());
+                    return materializr::trFormat("Add Distance %s", materializr::fmtLength(c.value));
                 } else if (c.type == ConstraintType::Radius) {
-                    std::snprintf(buf, sizeof(buf), "Add \xC3\x98 %s", materializr::fmtLength(c.value * 2.0).c_str());
+                    return materializr::trFormat("Add \xc3\x98 %s", materializr::fmtLength(c.value * 2.0));
                 } else if (c.type == ConstraintType::Angle) {
-                    std::snprintf(buf, sizeof(buf), "Add Angle %.1f\xC2\xB0",
-                                  c.value * 180.0 / M_PI);
+                    return materializr::trFormat("Add Angle %.1f\xc2\xb0",
+                                                 c.value * 180.0 / M_PI);
                 } else if (c.type == ConstraintType::DistancePointLine) {
-                    std::snprintf(buf, sizeof(buf), "Add Distance %s", materializr::fmtLength(c.value).c_str());
+                    return materializr::trFormat("Add Distance %s", materializr::fmtLength(c.value));
                 } else if (c.type == ConstraintType::CircleGap) {
-                    std::snprintf(buf, sizeof(buf), "Add Gap %s", materializr::fmtLength(c.value).c_str());
+                    return materializr::trFormat("Add Gap %s", materializr::fmtLength(c.value));
                 } else {
-                    std::snprintf(buf, sizeof(buf), "Add %s", name);
+                    return materializr::trFormat("Add %s", materializr::tr(name));
                 }
-                return buf;
             }
-            return "Add constraint";
+            return materializr::tr("Add constraint");
         } else {
             // Removed - name the removed type if we can identify it.
             for (const auto& b : cBefore) {
                 bool stillThere = false;
                 for (const auto& a : cAfter) if (a.id == b.id) { stillThere = true; break; }
                 if (stillThere) continue;
-                std::snprintf(buf, sizeof(buf), "Remove %s", constraintName(b.type));
-                return buf;
+                return materializr::trFormat("Remove %s",
+                                             materializr::tr(constraintName(b.type)));
             }
-            return "Remove constraint";
+            return materializr::tr("Remove constraint");
         }
     } else {
         // Same count - check for a value edit on the same id.
@@ -115,22 +113,24 @@ std::string SketchEditOp::description() const {
             if (std::abs(bMatch->value - cAfter[i].value) > 1e-9 ||
                 std::abs(bMatch->valueY - cAfter[i].valueY) > 1e-9 ||
                 bMatch->isDriving != cAfter[i].isDriving) {
-                char buf[100];
                 if (cAfter[i].type == ConstraintType::Angle) {
-                    std::snprintf(buf, sizeof(buf), "Edit Angle %.1f\xC2\xB0 \xE2\x86\x92 %.1f\xC2\xB0",
-                                  bMatch->value * 180.0 / M_PI,
-                                  cAfter[i].value * 180.0 / M_PI);
+                    return materializr::trFormat("Edit Angle %.1f\xc2\xb0 \xe2\x86\x92 %.1f\xc2\xb0",
+                                                 bMatch->value * 180.0 / M_PI,
+                                                 cAfter[i].value * 180.0 / M_PI);
                 } else if (cAfter[i].type == ConstraintType::Radius) {
-                    std::snprintf(buf, sizeof(buf), "Edit \xC3\x98 %s \xE2\x86\x92 %s", materializr::fmtLength(bMatch->value * 2.0).c_str(), materializr::fmtLength(cAfter[i].value * 2.0).c_str());
+                    return materializr::trFormat("Edit \xc3\x98 %s \xe2\x86\x92 %s",
+                                                 materializr::fmtLength(bMatch->value * 2.0),
+                                                 materializr::fmtLength(cAfter[i].value * 2.0));
                 } else if (cAfter[i].type == ConstraintType::Distance ||
                            cAfter[i].type == ConstraintType::DistancePointLine ||
                            cAfter[i].type == ConstraintType::CircleGap) {
-                    std::snprintf(buf, sizeof(buf), "Edit Distance %s \xE2\x86\x92 %s", materializr::fmtLength(bMatch->value).c_str(), materializr::fmtLength(cAfter[i].value).c_str());
+                    return materializr::trFormat("Edit Distance %s \xe2\x86\x92 %s",
+                                                 materializr::fmtLength(bMatch->value),
+                                                 materializr::fmtLength(cAfter[i].value));
                 } else {
-                    std::snprintf(buf, sizeof(buf), "Edit %s",
-                                  constraintName(cAfter[i].type));
+                    return materializr::trFormat("Edit %s",
+                                                 materializr::tr(constraintName(cAfter[i].type)));
                 }
-                return buf;
             }
         }
     }
@@ -165,14 +165,13 @@ std::string SketchEditOp::description() const {
             double dx = b.x - a.x, dy = b.y - a.y;
             return std::sqrt(dx * dx + dy * dy);
         };
-        char buf[96];
         if (nc.size() == 1 && nl.empty() && na.empty()) {
-            std::snprintf(buf, sizeof(buf), "Circle \xC3\x98%s", materializr::fmtLength(nc[0]->radius * 2.0).c_str());
-            return buf;
+            return materializr::trFormat("Circle \xc3\x98%s",
+                                         materializr::fmtLength(nc[0]->radius * 2.0));
         }
         if (na.size() == 1 && nl.empty() && nc.empty()) {
-            std::snprintf(buf, sizeof(buf), "Arc R%s", materializr::fmtLength(na[0]->radius).c_str());
-            return buf;
+            return materializr::trFormat("Arc R%s",
+                                         materializr::fmtLength(na[0]->radius));
         }
         if (nl.size() == 4 && nc.empty() && na.empty()) {
             // Rectangle iff the four sides form two equal pairs (W,W,H,H).
@@ -190,21 +189,22 @@ std::string SketchEditOp::description() const {
                         minx = std::min(minx, p.x); maxx = std::max(maxx, p.x);
                         miny = std::min(miny, p.y); maxy = std::max(maxy, p.y);
                     }
-                std::snprintf(buf, sizeof(buf), "Rectangle %s \xC3\x97 %s", materializr::fmtLength(maxx - minx).c_str(), materializr::fmtLength(maxy - miny).c_str());
-                return buf;
+                return materializr::trFormat("Rectangle %s \xc3\x97 %s",
+                                             materializr::fmtLength(maxx - minx),
+                                             materializr::fmtLength(maxy - miny));
             }
         }
         if (nl.size() == 1 && nc.empty() && na.empty()) {
-            std::snprintf(buf, sizeof(buf), "Line %s", materializr::fmtLength(lineLen(nl[0])).c_str());
-            return buf;
+            return materializr::trFormat("Line %s",
+                                         materializr::fmtLength(lineLen(nl[0])));
         }
     }
 
     // Anything else - fall back to the generic element-count diff.
     int delta = m_after->elementCount() - m_before->elementCount();
-    if (delta > 0) return "Add sketch element";
-    if (delta < 0) return "Remove sketch element";
-    return "Modify sketch";
+    if (delta > 0) return materializr::tr("Add sketch element");
+    if (delta < 0) return materializr::tr("Remove sketch element");
+    return materializr::tr("Modify sketch");
 }
 
 // Writes one Sketch's contents in the project file's SKETCH_START / SKETCH_END

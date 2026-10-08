@@ -1,4 +1,5 @@
 #include "MirrorOp.h"
+#include "ui/LengthField.h"
 #include <BRepBuilderAPI_Transform.hxx>
 #include <gp_Trsf.hxx>
 #include <gp_Ax2.hxx>
@@ -107,7 +108,8 @@ std::string MirrorOp::description() const {
         case MirrorPlane::YZ: planeStr = "YZ"; break;
         case MirrorPlane::Custom: planeStr = "Custom"; break;
     }
-    return "Mirror across " + planeStr + (m_keepOriginal ? " (keep original)" : "");
+    return materializr::trFormat("Mirror across %s", materializr::tr(planeStr.c_str())) +
+           (m_keepOriginal ? materializr::tr(" (keep original)") : "");
 }
 
 void MirrorOp::renderProperties() {

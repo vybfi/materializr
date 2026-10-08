@@ -265,12 +265,13 @@ bool RevolveOp::rehydrateFromReload(const ReloadState& state, Document& doc) {
 }
 
 std::string RevolveOp::description() const {
-    std::string desc = "Lathe " + std::to_string(static_cast<int>(m_angle)) + " deg";
+    std::string desc = materializr::trFormat("Lathe %d deg",
+                                             static_cast<int>(m_angle));
     switch (m_mode) {
-        case RevolveMode::NewBody:   desc += " (New Body)"; break;
-        case RevolveMode::Union:     desc += " (Union)"; break;
-        case RevolveMode::Subtract:  desc += " (Subtract)"; break;
-        case RevolveMode::Intersect: desc += " (Intersect)"; break;
+        case RevolveMode::NewBody:   desc += " (" + std::string(materializr::tr("New Body")) + ")"; break;
+        case RevolveMode::Union:     desc += " (" + std::string(materializr::tr("Union")) + ")"; break;
+        case RevolveMode::Subtract:  desc += " (" + std::string(materializr::tr("Subtract")) + ")"; break;
+        case RevolveMode::Intersect: desc += " (" + std::string(materializr::tr("Intersect")) + ")"; break;
     }
     return desc;
 }

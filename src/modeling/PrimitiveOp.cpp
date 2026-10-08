@@ -114,19 +114,19 @@ bool PrimitiveOp::undo(Document& doc) {
 }
 
 std::string PrimitiveOp::description() const {
-    std::string lbl = kindLabel(m_kind);
+    std::string lbl = materializr::tr(kindLabel(m_kind));
     char buf[96];
     switch (m_kind) {
         case Kind::Box:
-            std::snprintf(buf, sizeof(buf), " %sx%sx%s", materializr::fmtLength(m_x).c_str(), materializr::fmtLength(m_y).c_str(), materializr::fmtLength(m_z).c_str()); break;
+            std::snprintf(buf, sizeof(buf), materializr::tr(" %sx%sx%s"), materializr::fmtLength(m_x).c_str(), materializr::fmtLength(m_y).c_str(), materializr::fmtLength(m_z).c_str()); break;
         case Kind::Cylinder:
-            std::snprintf(buf, sizeof(buf), " R%s x H%s", materializr::fmtLength(m_radius).c_str(), materializr::fmtLength(m_height).c_str()); break;
+            std::snprintf(buf, sizeof(buf), materializr::tr(" R%s x H%s"), materializr::fmtLength(m_radius).c_str(), materializr::fmtLength(m_height).c_str()); break;
         case Kind::Sphere:
-            std::snprintf(buf, sizeof(buf), " R%s", materializr::fmtLength(m_radius).c_str()); break;
+            std::snprintf(buf, sizeof(buf), materializr::tr(" R%s"), materializr::fmtLength(m_radius).c_str()); break;
         case Kind::Cone:
-            std::snprintf(buf, sizeof(buf), " R%s→%s x H%s", materializr::fmtLength(m_radius).c_str(), materializr::fmtLength(m_topRadius).c_str(), materializr::fmtLength(m_height).c_str()); break;
+            std::snprintf(buf, sizeof(buf), materializr::tr(" R%s→%s x H%s"), materializr::fmtLength(m_radius).c_str(), materializr::fmtLength(m_topRadius).c_str(), materializr::fmtLength(m_height).c_str()); break;
         case Kind::Torus:
-            std::snprintf(buf, sizeof(buf), " R%s r%s", materializr::fmtLength(m_radius).c_str(), materializr::fmtLength(m_minorRadius).c_str()); break;
+            std::snprintf(buf, sizeof(buf), materializr::tr(" R%s r%s"), materializr::fmtLength(m_radius).c_str(), materializr::fmtLength(m_minorRadius).c_str()); break;
     }
     return lbl + std::string(buf);
 }

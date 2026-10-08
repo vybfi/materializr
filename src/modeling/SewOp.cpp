@@ -1,4 +1,5 @@
 #include "SewOp.h"
+#include "ui/LengthField.h"
 
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
@@ -196,13 +197,11 @@ bool SewOp::undo(Document& doc) {
 std::string SewOp::description() const {
     char buf[128];
     if (m_madeSolid)
-        std::snprintf(buf, sizeof buf, "Sew %d surfaces into a solid",
-                      static_cast<int>(m_bodyIds.size()));
-    else
-        std::snprintf(buf, sizeof buf, "Sew %d surfaces (%d edge%s still open)",
-                      static_cast<int>(m_bodyIds.size()), m_freeEdges,
-                      m_freeEdges == 1 ? "" : "s");
-    return buf;
+        return materializr::trFormat("Sew %d surfaces into a solid",
+                                     static_cast<int>(m_bodyIds.size()));
+    return materializr::trFormat("Sew %d surfaces (%d edge%s still open)",
+                                 static_cast<int>(m_bodyIds.size()), m_freeEdges,
+                                 m_freeEdges == 1 ? "" : "s");
 }
 
 void SewOp::renderProperties() {

@@ -93,7 +93,7 @@ void HistoryPanel::renderContent() {
         ImGui::PushTextWrapPos(0.0f);
         ImGui::TextColored(ImVec4(1.0f, 0.45f, 0.35f, 1.0f),
             materializr::tr("Step %d (%s) couldn't recompute - the geometry it referenced no longer exists after an upstream step was edited or disabled. Re-enable the disabled step, edit an upstream step (it retries automatically), edit this step's parameters, or delete it."),
-            failedAt + 1, fop ? fop->name().c_str() : "?");
+            failedAt + 1, fop ? materializr::tr(fop->name().c_str()) : "?");
         ImGui::PopTextWrapPos();
         ImGui::Separator();
     }
@@ -393,7 +393,7 @@ void HistoryPanel::renderContent() {
         if (op) {
             ImGui::Separator();
             ImGui::TextColored(materializr::accentText(), materializr::tr("Properties: %s"),
-                               op->name().c_str());
+                               materializr::tr(op->name().c_str()));
             ImGui::BeginChild("StepProps",
                               ImVec2(0, propsBlockH - kPropsChrome), true);
             const float propsTop = ImGui::GetCursorPosY();

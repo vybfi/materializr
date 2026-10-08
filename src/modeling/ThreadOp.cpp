@@ -2098,12 +2098,14 @@ double ThreadOp::profileOpenFraction(ThreadProfile p) {
 }
 
 std::string ThreadOp::description() const {
-    char buf[128];
-    char starts[24] = "";
+    char starts[48] = "";
     if (m_starts > 1)
-        std::snprintf(starts, sizeof(starts), "%d-start ", m_starts);
-    std::snprintf(buf, sizeof(buf), "%s %sthread Ø%s, pitch %s%s", m_isHole ? "Internal" : "External", starts, materializr::fmtLength(m_radius * 2.0).c_str(), materializr::fmtLength(m_pitch).c_str(), m_rightHanded ? "" : " (LH)");
-    return buf;
+        std::snprintf(starts, sizeof(starts), "%s", materializr::trFormat("%d-start ", m_starts).c_str());
+    return materializr::trFormat("%s %sthread Ø%s, pitch %s%s",
+                                 materializr::tr(m_isHole ? "Internal" : "External"),
+                                 starts, materializr::fmtLength(m_radius * 2.0),
+                                 materializr::fmtLength(m_pitch),
+                                 m_rightHanded ? "" : materializr::tr(" (LH)"));
 }
 
 void ThreadOp::renderProperties() {

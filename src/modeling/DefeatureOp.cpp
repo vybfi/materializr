@@ -1,4 +1,5 @@
 #include "DefeatureOp.h"
+#include "ui/LengthField.h"
 #include "SubShapeIndex.h"
 #include <cstdio>
 #include <cstdlib>
@@ -58,7 +59,7 @@ bool DefeatureOp::undo(Document& doc) {
 }
 
 std::string DefeatureOp::description() const {
-    return "Remove " + std::to_string(m_faces.Size()) + " face(s)";
+    return materializr::trFormat("Remove %d face(s)", m_faces.Size());
 }
 
 void DefeatureOp::renderProperties() {

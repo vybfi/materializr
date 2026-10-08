@@ -1,4 +1,5 @@
 #include "SeparateBodyOp.h"
+#include "ui/LengthField.h"
 
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
@@ -83,8 +84,8 @@ bool SeparateBodyOp::undo(Document& doc) {
 }
 
 std::string SeparateBodyOp::description() const {
-    return "Separate body " + std::to_string(m_bodyId) + " into " +
-           std::to_string(m_newBodyIds.size() + 1) + " bodies";
+    return materializr::trFormat("Separate body %d into %d bodies", m_bodyId,
+                                 static_cast<int>(m_newBodyIds.size() + 1));
 }
 
 void SeparateBodyOp::renderProperties() {

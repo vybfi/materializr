@@ -666,15 +666,12 @@ void MoveFaceOp::applyResult(Document& doc, const TopoDS_Shape& result,
 }
 
 std::string MoveFaceOp::description() const {
-    char buf[96];
     if (m_kind == Kind::Twist) {
-        std::snprintf(buf, sizeof(buf), "Twist Face %.1f°",
-                      m_twistAngle * 180.0 / M_PI);
-        return buf;
+        return materializr::trFormat("Twist Face %.1f°",
+                                     m_twistAngle * 180.0 / M_PI);
     }
-    std::snprintf(buf, sizeof(buf), "Move Face by (%.2f, %.2f, %.2f)",
-                  m_move.X(), m_move.Y(), m_move.Z());
-    return buf;
+    return materializr::trFormat("Move Face by (%.2f, %.2f, %.2f)",
+                                 m_move.X(), m_move.Y(), m_move.Z());
 }
 
 void MoveFaceOp::renderProperties() {

@@ -16,14 +16,21 @@ are preserved below as required by their licenses.
 | Stencil (Black Ops) | `BlackOpsOne-Regular.ttf` | © The Black Ops One Project Authors (Matt McInerney) | SIL OFL 1.1 |
 | Impact (Anton) | `Anton-Regular.ttf` | © The Anton Project Authors (Vernon Adams) | SIL OFL 1.1 |
 | Script (Pacifico) | `Pacifico-Regular.ttf` | © The Pacifico Project Authors (Vernon Adams) | SIL OFL 1.1 |
+| 中文 (Noto Sans SC) | `NotoSansSC-Regular.ttf` | © Google LLC (Noto project) | SIL OFL 1.1 |
 | *(UI icons - not in the Text picker)* | `Iconoir.ttf` | Iconoir © Luca Burgio; font build © Silbad (iconoir-font) | MIT |
 
 License texts in `licenses/`:
-- `OFL-1.1.txt` - SIL Open Font License 1.1 (JetBrains Mono, Liberation, Comic Neue, Black Ops One, Anton, Pacifico).
+- `OFL-1.1.txt` - SIL Open Font License 1.1 (JetBrains Mono, Liberation, Comic Neue, Black Ops One, Anton, Pacifico, Noto Sans SC).
 - `UFL-1.0.txt` - Ubuntu Font Licence 1.0 (Ubuntu).
 - `DejaVu-copyright.txt` - Bitstream Vera + Arev (DejaVu).
 - `Liberation-copyright.txt` - distribution copyright/license for the Liberation family.
 - `Iconoir-LICENSE.txt` - MIT (Iconoir icon glyph font; used by the im-touch UI shell, merged into the ImGui atlas - deliberately NOT offered by the Text tool).
+
+Noto Sans SC is bundled as the CJK fallback merged into the UI font (Chinese
+interface text) as well as a Text-tool picker entry. The shipped file is the
+`wght=400` static instance of the variable font from the google/fonts repo
+(`ofl/notosanssc`), generated with `fonttools varLib.instancer`; "Noto" and the
+Noto fonts are trademarks of Google LLC, whose use does not imply endorsement.
 
 Liberation Serif and Liberation Sans are *metrically compatible* with Times New
 Roman and Arial respectively (matching widths and shapes); the real Microsoft

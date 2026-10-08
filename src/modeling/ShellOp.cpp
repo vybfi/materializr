@@ -365,8 +365,8 @@ bool ShellOp::undo(Document& doc) {
 
 std::string ShellOp::description() const {
     int faceCount = m_facesToRemove.Size();
-    return "Shell thickness " + materializr::fmtLength(m_thickness) +
-           " (" + std::to_string(faceCount) + " open face(s))";
+    return materializr::trFormat("Shell thickness %s (%d open face(s))",
+                                 materializr::fmtLength(m_thickness), faceCount);
 }
 
 void ShellOp::renderProperties() {

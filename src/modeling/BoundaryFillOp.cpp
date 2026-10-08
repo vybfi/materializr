@@ -1,4 +1,5 @@
 #include "BoundaryFillOp.h"
+#include "ui/LengthField.h"
 
 #include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
@@ -170,8 +171,8 @@ bool BoundaryFillOp::undo(Document& doc) {
 }
 
 std::string BoundaryFillOp::description() const {
-    return "Boundary fill from " + std::to_string(m_outers.size()) +
-           " silhouettes";
+    return materializr::trFormat("Boundary fill from %d silhouettes",
+                                 static_cast<int>(m_outers.size()));
 }
 
 void BoundaryFillOp::renderProperties() {

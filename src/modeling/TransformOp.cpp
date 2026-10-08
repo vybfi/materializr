@@ -255,15 +255,19 @@ std::string TransformOp::description() const {
         case TransformType::Translate:
             // Shown in the user's Z-up axes (user Y = world Z, user Z = world Y),
             // matching the ViewCube and the Move/Rotate dialogs.
-            return "Translate " + materializr::fmtVec3(m_dx, m_dz, m_dy);
+            return materializr::trFormat("Translate %s",
+                                         materializr::fmtVec3(m_dx, m_dz, m_dy));
         case TransformType::Rotate:
-            return "Rotate " + std::to_string(m_angle) + " deg around (" +
-                   std::to_string(m_ax) + ", " + std::to_string(m_az) + ", " +
-                   std::to_string(m_ay) + ")";
+            return materializr::trFormat("Rotate %s deg around (%s, %s, %s)",
+                                         std::to_string(m_angle),
+                                         std::to_string(m_ax),
+                                         std::to_string(m_az),
+                                         std::to_string(m_ay));
         case TransformType::Scale:
-            return "Scale by " + std::to_string(m_scale);
+            return materializr::trFormat("Scale by %s",
+                                         std::to_string(m_scale));
     }
-    return "Transform";
+    return materializr::tr("Transform");
 }
 
 void TransformOp::renderProperties() {

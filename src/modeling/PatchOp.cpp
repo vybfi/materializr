@@ -1,4 +1,5 @@
 #include "PatchOp.h"
+#include "ui/LengthField.h"
 
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
@@ -446,8 +447,8 @@ std::string PatchOp::description() const {
     const char* c = m_continuity == Continuity::Curvature ? "curvature"
                   : m_continuity == Continuity::Tangent   ? "tangent"
                                                           : "position";
-    return std::string("Patch across ") + std::to_string(m_edges.size()) +
-           " edges (" + c + ")";
+    return materializr::trFormat("Patch across %d edges (%s)",
+                                 static_cast<int>(m_edges.size()), materializr::tr(c));
 }
 
 void PatchOp::renderProperties() {

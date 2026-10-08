@@ -1,4 +1,5 @@
 #include "MeshTraceSetupOp.h"
+#include "../i18n.h"
 #include "Sketch.h"
 #include "../core/Document.h"
 
@@ -104,7 +105,7 @@ std::string MeshTraceSetupOp::description() const {
     // translates the leading alphabetic run of a composed description (see
     // its comment), and a leading "3" makes that run zero-length so this
     // would otherwise never translate no matter what the catalogue holds.
-    return "Mesh trace setup (3 planes + sketches)";
+    return materializr::tr("Mesh trace setup (3 planes + sketches)");
 }
 
 std::string MeshTraceSetupOp::serializeParams() const {

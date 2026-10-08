@@ -1139,6 +1139,24 @@ void Application::initImGui() {
                                              &cfg, kIconRange))
                 std::fprintf(stderr, "Loaded font: %s (icon merge)\n", icons.c_str());
         }
+
+        // Merge Noto Sans SC as the CJK fallback so Simplified Chinese (and
+        // any CJK in project names, file paths, sketch notes) renders instead
+        // of collapsing to '?'. JetBrains Mono has no hanzi glyphs at all, so
+        // without this the Chinese UI is unreadable. ImGui 1.92 rasterises
+        // merged sources on demand, so the atlas only pays for glyphs actually
+        // drawn; lookup walks sources in merge order, meaning JetBrains Mono
+        // keeps every glyph it has, Iconoir keeps its PUA block, and Noto
+        // covers exactly the rest. No ranges here on purpose: same on-demand
+        // story as the primary font, and full coverage for user-typed text.
+        std::string cjk = resolveBundledFont("NotoSansSC-Regular.ttf");
+        if (fnt && !cjk.empty()) {
+            ImFontConfig cfg;
+            cfg.MergeMode = true;
+            if (io.Fonts->AddFontFromFileTTF(cjk.c_str(), 15.0f * uiScale, &cfg))
+                std::fprintf(stderr, "Loaded font: %s (CJK fallback merge)\n",
+                             cjk.c_str());
+        }
     }
 
     ImGui_ImplSDL2_InitForOpenGL(m_window->handle(), m_window->glContext());

@@ -1,4 +1,5 @@
 #include "BooleanOp.h"
+#include "ui/LengthField.h"
 #include "../core/UiKeepAlive.h"
 #include <Message_ProgressIndicator.hxx>
 #include <Message_ProgressScope.hxx>
@@ -394,8 +395,8 @@ std::string BooleanOp::description() const {
         case BooleanMode::Subtract:  modeStr = "Subtract"; break;
         case BooleanMode::Intersect: modeStr = "Intersect"; break;
     }
-    return "Boolean " + modeStr + " (body " + std::to_string(m_targetBodyId) +
-           " with body " + std::to_string(m_toolBodyId) + ")";
+    return materializr::trFormat("Boolean %s (body %d with body %d)",
+                                 materializr::tr(modeStr.c_str()), m_targetBodyId, m_toolBodyId);
 }
 
 void BooleanOp::renderProperties() {

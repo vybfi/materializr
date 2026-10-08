@@ -1,4 +1,5 @@
 #include "TaperOp.h"
+#include "ui/LengthField.h"
 #include "SubShapeIndex.h"
 #include <cstdio>
 #include <cstdlib>
@@ -147,10 +148,8 @@ bool TaperOp::undo(Document& doc) {
 }
 
 std::string TaperOp::description() const {
-    char buf[96];
-    std::snprintf(buf, sizeof(buf), "Draft %.1f deg (%d face(s))",
-                  m_angleDeg, m_faces.Size());
-    return buf;
+    return materializr::trFormat("Draft %.1f deg (%d face(s))",
+                                 m_angleDeg, m_faces.Size());
 }
 
 void TaperOp::renderProperties() {

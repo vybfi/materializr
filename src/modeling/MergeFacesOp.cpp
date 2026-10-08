@@ -1,4 +1,5 @@
 #include "MergeFacesOp.h"
+#include "ui/LengthField.h"
 #include "FaceLineage.h"
 #include "UnifyTolerance.h"
 
@@ -546,8 +547,8 @@ bool MergeFacesOp::undo(Document& doc) {
 }
 
 std::string MergeFacesOp::description() const {
-    return "Merge faces (" + std::to_string(m_facesBefore) + " \xE2\x86\x92 " +
-           std::to_string(m_facesAfter) + ")";
+    return materializr::trFormat("Merge faces (%d \xe2\x86\x92 %d)",
+                                 m_facesBefore, m_facesAfter);
 }
 
 void MergeFacesOp::renderProperties() {

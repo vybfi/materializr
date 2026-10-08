@@ -1,4 +1,5 @@
 #include "AxisTransformOp.h"
+#include "ui/LengthField.h"
 #include "../core/Document.h"
 #include <imgui.h>
 #include <cstdio>
@@ -22,9 +23,11 @@ bool AxisTransformOp::undo(Document& doc) {
 
 std::string AxisTransformOp::description() const {
     if (m_entries.size() == 1) {
-        return m_label + " (axis " + std::to_string(m_entries.front().axisId) + ")";
+        return materializr::trFormat("%s (axis %d)", materializr::tr(m_label.c_str()),
+                                     m_entries.front().axisId);
     }
-    return m_label + " (" + std::to_string(m_entries.size()) + " axes)";
+    return materializr::trFormat("%s (%d axes)", materializr::tr(m_label.c_str()),
+                                 static_cast<int>(m_entries.size()));
 }
 
 void AxisTransformOp::renderProperties() {

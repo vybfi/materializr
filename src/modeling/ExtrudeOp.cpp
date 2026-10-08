@@ -858,12 +858,12 @@ bool ExtrudeOp::rehydrateFromReload(const ReloadState& state, Document& doc) {
 }
 
 std::string ExtrudeOp::description() const {
-    std::string desc = "Extrude " + materializr::fmtLength(m_distance);
+    std::string desc = materializr::trFormat("Extrude %s", materializr::fmtLength(m_distance));
     switch (m_mode) {
-        case ExtrudeMode::NewBody:   desc += " (New Body)"; break;
-        case ExtrudeMode::Union:     desc += " (Union)"; break;
-        case ExtrudeMode::Subtract:  desc += " (Subtract)"; break;
-        case ExtrudeMode::Intersect: desc += " (Intersect)"; break;
+        case ExtrudeMode::NewBody:   desc += " (" + std::string(materializr::tr("New Body")) + ")"; break;
+        case ExtrudeMode::Union:     desc += " (" + std::string(materializr::tr("Union")) + ")"; break;
+        case ExtrudeMode::Subtract:  desc += " (" + std::string(materializr::tr("Subtract")) + ")"; break;
+        case ExtrudeMode::Intersect: desc += " (" + std::string(materializr::tr("Intersect")) + ")"; break;
     }
     return desc;
 }

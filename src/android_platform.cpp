@@ -91,6 +91,7 @@ void androidInitRuntime() {
         "LiberationSerif-Regular.ttf", "LiberationSans-Regular.ttf",
         "Ubuntu-Regular.ttf", "ComicNeue-Regular.ttf",
         "BlackOpsOne-Regular.ttf", "Anton-Regular.ttf", "Pacifico-Regular.ttf",
+        "NotoSansSC-Regular.ttf", // CJK fallback for the UI font + Text picker
         "Iconoir.ttf" // UI icon glyphs (im-touch shell), not a Text-tool font
     };
     for (const char* f : fonts) {

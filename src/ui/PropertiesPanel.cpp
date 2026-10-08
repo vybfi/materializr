@@ -214,7 +214,7 @@ void PropertiesPanel::renderContent() {
         const Operation* op = m_history->getStep(m_editingStep);
         if (op) {
             // Operation header
-            ImGui::TextColored(materializr::accentText(), "%s", op->name().c_str());
+            ImGui::TextColored(materializr::accentText(), "%s", materializr::tr(op->name().c_str()));
             ImGui::Separator();
 
             ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "%s", op->description().c_str());

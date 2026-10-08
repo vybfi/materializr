@@ -787,11 +787,13 @@ bool ChamferOp::undo(Document& doc) {
 
 std::string ChamferOp::description() const {
     if (m_distance2 > 0.0)
-        return "Chamfer D" + materializr::fmtLength(m_distance) + "/" +
-               materializr::fmtLength(m_distance2) + " on " +
-               std::to_string(m_edges.size()) + " edge(s)";
-    return "Chamfer D" + materializr::fmtLength(m_distance) + " on " +
-           std::to_string(m_edges.size()) + " edge(s)";
+        return materializr::trFormat("Chamfer D%s/%s on %d edge(s)",
+                                     materializr::fmtLength(m_distance),
+                                     materializr::fmtLength(m_distance2),
+                                     static_cast<int>(m_edges.size()));
+    return materializr::trFormat("Chamfer D%s on %d edge(s)",
+                                 materializr::fmtLength(m_distance),
+                                 static_cast<int>(m_edges.size()));
 }
 
 void ChamferOp::renderProperties() {

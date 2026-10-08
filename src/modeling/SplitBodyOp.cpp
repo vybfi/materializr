@@ -1,4 +1,5 @@
 #include "SplitBodyOp.h"
+#include "ui/LengthField.h"
 #include <cstdio>
 #include <BRepAlgoAPI_Splitter.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -114,7 +115,7 @@ bool SplitBodyOp::undo(Document& doc) {
 }
 
 std::string SplitBodyOp::description() const {
-    return "Split Body " + std::to_string(m_bodyId) + " by plane";
+    return materializr::trFormat("Split Body %d by plane", m_bodyId);
 }
 
 void SplitBodyOp::renderProperties() {

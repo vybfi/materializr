@@ -1,4 +1,5 @@
 #include "PlaneTransformOp.h"
+#include "ui/LengthField.h"
 #include "../core/Document.h"
 #include <imgui.h>
 #include <cstdio>
@@ -25,9 +26,11 @@ bool PlaneTransformOp::undo(Document& doc) {
 
 std::string PlaneTransformOp::description() const {
     if (m_entries.size() == 1) {
-        return m_label + " (plane " + std::to_string(m_entries.front().planeId) + ")";
+        return materializr::trFormat("%s (plane %d)", materializr::tr(m_label.c_str()),
+                                     m_entries.front().planeId);
     }
-    return m_label + " (" + std::to_string(m_entries.size()) + " planes)";
+    return materializr::trFormat("%s (%d planes)", materializr::tr(m_label.c_str()),
+                                 static_cast<int>(m_entries.size()));
 }
 
 void PlaneTransformOp::renderProperties() {

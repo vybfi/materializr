@@ -1,4 +1,5 @@
 #include "DeleteOp.h"
+#include "ui/LengthField.h"
 #include <cstdio>
 #include <cstdlib>
 #include <imgui.h>
@@ -50,9 +51,9 @@ bool DeleteOp::undo(Document& doc) {
 
 std::string DeleteOp::description() const {
     if (m_deletedName.empty()) {
-        return "Delete body " + std::to_string(m_bodyId);
+        return materializr::trFormat("Delete body %d", m_bodyId);
     }
-    return "Delete \"" + m_deletedName + "\"";
+    return materializr::trFormat("Delete \"%s\"", m_deletedName.c_str());
 }
 
 void DeleteOp::renderProperties() {

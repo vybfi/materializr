@@ -138,8 +138,9 @@ bool PatternOp::undo(Document& doc) {
 }
 
 std::string PatternOp::description() const {
-    std::string typeStr = (m_type == PatternType::Linear) ? "Linear" : "Radial";
-    return typeStr + " Pattern, " + std::to_string(m_count) + " copies";
+    const char* typeStr = (m_type == PatternType::Linear) ? "Linear" : "Radial";
+    return materializr::trFormat("%s Pattern, %d copies", materializr::tr(typeStr),
+                                 m_count);
 }
 
 std::string PatternOp::serializeParams() const {

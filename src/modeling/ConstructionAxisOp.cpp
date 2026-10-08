@@ -1,4 +1,5 @@
 #include "ConstructionAxisOp.h"
+#include "ui/LengthField.h"
 #include <cstdio>
 #include <cstdlib>
 
@@ -152,7 +153,7 @@ std::string ConstructionAxisOp::description() const {
         case AxisCreationType::AlongEdge:         typeStr = "Along edge"; break;
         case AxisCreationType::TwoPlanesIntersection: typeStr = "Plane intersection"; break;
     }
-    return std::string("Construction Axis (") + typeStr + ")";
+    return materializr::trFormat("Construction Axis (%s)", materializr::tr(typeStr));
 }
 
 void ConstructionAxisOp::renderProperties() {
